@@ -1,8 +1,9 @@
 import winston from 'winston';
 import chalk from 'chalk';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import 'path';
 import 'winston-daily-rotate-file';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 const logDir = 'logs';
 
@@ -55,9 +56,15 @@ const logger = winston.createLogger({
             datePattern: 'YYYY-MM-DD',
             level: 'info',
             maxSize: '20m',
-            maxFiles: '14d',
+            maxFiles: '29d',
         }),
-        
+        new (DailyRotateFile as any)({
+            filename: 'logs/combined-%DATE%.log',
+            datePattern: 'YYYY-MM-DD',
+            level: 'info',
+            maxSize: '20m',
+            maxFiles: '29d',
+        })
     ],
 });
 export function logWithContext(level: string, message: string, context: object) {
