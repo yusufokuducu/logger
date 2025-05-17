@@ -32,9 +32,17 @@ const format = winston.format.combine(
     winston.format.metadata({ fillExcept: ['message', 'level', 'timestamp'] }),
     winston.format.errors({ stack: true }),
     winston.format.printf(({level, message, timestamp, ...metadata})=> {
-        const color = chalk.bold(colors[level as keyof typeof colors]);
+        let colorFn;
+        switch(level) {
+            case 'error!': colorFn = chalk.red.bold; break;
+            case 'warn': colorFn = chalk.yellow.bold; break;
+            case 'info': colorFn = chalk.green.bold; break;
+            case 'http': colorFn = chalk.magenta.bold; break;
+            case 'debug': colorFn = chalk.white.bold; break;
+            default: colorFn = chalk.white;
+        }
         const metaString = Object.keys(metadata).length ? JSON.stringify(metadata) : '';
-        return `${timestamp} ${color} ${level.toUpperCase()}: ${message} ${metaString}`;
+        return `${timestamp} ${colorFn(level.toUpperCase())}: ${message} ${metaString}`;
     })
 );
 
