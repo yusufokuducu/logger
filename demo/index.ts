@@ -1,19 +1,56 @@
 import logger, { logWithContext } from '../src/index';
 
-console.log('Starting logger demo...');
+// Simulate backend server startup
+logger.info('Server starting...');
+logger.info('Initializing configuration');
+logger.debug('Environment: production');
+logger.debug('Database connection string: mongodb://localhost:27017/myapp');
 
-// Basic logging examples
-logger.info('This is an info message');
-logger.warn('This is a warning message');
-logger.error('This is an error message');
-logger.debug('This is a debug message');
-
-// Logging with context
-logWithContext('info', 'User logged in', { userId: '12345', timestamp: new Date() });
-logWithContext('error', 'Failed to process payment', { 
-  orderId: 'ORD-9876',
-  errorCode: 'PAYMENT_FAILED',
-  details: 'Invalid card information'
+// Simulate API endpoint requests
+logger.info('API Server listening on port 3000');
+logWithContext('info', 'Received GET request', {
+  endpoint: '/api/users',
+  requestId: 'req-123456',
+  clientIp: '192.168.1.105',
+  timestamp: new Date()
 });
 
-console.log('Demo completed. Check the logs directory for output files.'); 
+// Simulate database operations
+logWithContext('debug', 'Database query executed', {
+  operation: 'FIND',
+  collection: 'users',
+  query: { active: true },
+  executionTime: '45ms',
+  timestamp: new Date()
+});
+
+// Simulate authentication events
+logWithContext('info', 'User authenticated', {
+  userId: 'user-9876',
+  username: 'admin@example.com',
+  method: 'JWT',
+  timestamp: new Date()
+});
+
+// Simulate error handling
+logWithContext('error', 'Failed to process request', { 
+  endpoint: '/api/orders/process',
+  requestId: 'req-789012',
+  errorCode: 'ERR_PAYMENT_GATEWAY',
+  statusCode: 500,
+  details: 'Payment gateway timeout after 30s',
+  timestamp: new Date()
+});
+
+// Simulate performance metrics
+logWithContext('warn', 'Slow database query detected', {
+  operation: 'AGGREGATE',
+  collection: 'transactions',
+  executionTime: '1250ms',
+  threshold: '1000ms',
+  timestamp: new Date()
+});
+
+logger.info('Server gracefully shutting down');
+logger.info('Closed database connections');
+logger.info('Server stopped'); 
